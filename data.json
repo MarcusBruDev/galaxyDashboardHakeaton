@@ -1,0 +1,103 @@
+{
+  "planet": {
+    "id": "mars-001",
+    "name": "Marte",
+    "description": "Planeta rojo con colonias humanas en etapa temprana.",
+    
+    "global_resources": {
+      "water": 150000,
+      "oxygen": 120000,
+      "energy": 180000,
+      "food": 90000,
+      "minerals": 250000
+    },
+
+    "population": 1200,
+
+    "environment": {
+      "temperature": -63,
+      "radiation_level": "medium",
+      "atmosphere": {
+        "co2": 95.0,
+        "nitrogen": 2.7,
+        "argon": 1.6,
+        "oxygen": 0.13
+      }
+    },
+
+    "colonies": [
+      {
+        "id": "col-001",
+        "name": "Colonia Solaris",
+        "population": 450,
+        "production": {
+          "energy_per_min": 150,
+          "water_per_min": 20,
+          "oxygen_per_min": 15,
+          "food_per_min": 10,
+          "minerals_per_min": 30
+        },
+        "storage": {
+          "water": 5000,
+          "oxygen": 3000,
+          "energy": 8000,
+          "food": 2500,
+          "minerals": 7000
+        }
+      },
+      {
+        "id": "col-002",
+        "name": "Colonia Ares",
+        "population": 300,
+        "production": {
+          "energy_per_min": 80,
+          "water_per_min": 10,
+          "oxygen_per_min": 12,
+          "food_per_min": 6,
+          "minerals_per_min": 40
+        },
+        "storage": {
+          "water": 3000,
+          "oxygen": 2000,
+          "energy": 6000,
+          "food": 1400,
+          "minerals": 5000
+        }
+      },
+      {
+        "id": "col-003",
+        "name": "Colonia Borealis",
+        "population": 450,
+        "production": {
+          "energy_per_min": 100,
+          "water_per_min": 35,
+          "oxygen_per_min": 20,
+          "food_per_min": 12,
+          "minerals_per_min": 25
+        },
+        "storage": {
+          "water": 7000,
+          "oxygen": 4500,
+          "energy": 9000,
+          "food": 3000,
+          "minerals": 4500
+        }
+      }
+    ],
+
+    "events": [
+      {
+        "id": "ev-001",
+        "type": "sand_storm",
+        "description": "Tormenta de arena reduce la producción de energía un 40%.",
+        "active": false
+      },
+      {
+        "id": "ev-002",
+        "type": "solar_flare",
+        "description": "Erupción solar aumenta la radiación por 24 horas.",
+        "active": false
+      }
+    ]
+  }
+}
