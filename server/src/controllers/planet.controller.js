@@ -6,7 +6,7 @@ import { PlanetHistory } from "../models/planetHistory.model.js";
 
 export const getPlanet = async (req, res) => {
   try {
-    const planets = await Planet.find();  
+    const planets = await Planet.find();
     res.json(planets);
 
   } catch (error) {
@@ -59,44 +59,44 @@ export const createPlanet = async (req, res) => {
 };
 
 
-export const updatePlanet = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updates = req.body; // Lo que envía el frontend
+// export const updatePlanet = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const updates = req.body; // Lo que envía el frontend
 
-    // 1. Obtener el estado previo del planeta
-    const previousPlanet = await Planet.findById(id);
+//     // 1. Obtener el estado previo del planeta
+//     const previousPlanet = await Planet.findById(id);
 
-    
-    if (!previousPlanet) {
-      return res.status(404).json({ message: "Planet not found" });
-    }
 
-    // 2. Actualizar el planeta
-    const updatedPlanet = await Planet.findByIdAndUpdate(
-      id,
-      updates,
-      { new: true } // ← devuelve el planeta actualizado
-    );
+//     if (!previousPlanet) {
+//       return res.status(404).json({ message: "Planet not found" });
+//     }
 
-    // 3. Guardar en histórico
-    await PlanetHistory.create({
-      planet_id: id,
-      changes: updates,
-      previous_data: previousPlanet,
-      new_data: updatedPlanet
-    });
+//     // 2. Actualizar el planeta
+//     const updatedPlanet = await Planet.findByIdAndUpdate(
+//       id,
+//       updates,
+//       { new: true } // ← devuelve el planeta actualizado
+//     );
 
-    return res.json({
-      message: "Planet updated",
-      planet: updatedPlanet
-    });
+//     // 3. Guardar en histórico
+//     await PlanetHistory.create({
+//       planet_id: id,
+//       changes: updates,
+//       previous_data: previousPlanet,
+//       new_data: updatedPlanet
+//     });
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Error updating planet",
-      error: error.message
-    });
-  }
-};
+//     return res.json({
+//       message: "Planet updated",
+//       planet: updatedPlanet
+//     });
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({
+//       message: "Error updating planet",
+//       error: error.message
+//     });
+//   }
+// };
