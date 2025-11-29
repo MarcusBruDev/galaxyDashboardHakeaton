@@ -70,6 +70,5 @@ const PlanetSchema = new mongoose.Schema({
 /**/
 
 
-
-
 export default mongoose.model("Planet", PlanetSchema);
+export const PlanetHistory = mongoose.model("PlanetHistory", PlanetHistoriesSchema);
