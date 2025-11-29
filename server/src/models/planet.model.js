@@ -53,19 +53,20 @@ const EventSchema = new mongoose.Schema({
 }, { _id: false });
 
 const PlanetSchema = new mongoose.Schema({
-  id: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String },
 
-  global_resources: { type: GlobalResourcesSchema, required: true },
+}, {
+  timestamps: true // createdAt, updatedAt
+});
+
+
+/*global_resources: { type: GlobalResourcesSchema, required: true },
   population: { type: Number, required: true },
   environment: { type: EnvironmentSchema, required: true },
 
   colonies: { type: [ColonySchema], required: true },
-  events: { type: [EventSchema], required: true }
-}, {
-  timestamps: true // createdAt, updatedAt
-});
+  events: { type: [EventSchema], required: true }*/
 
 
 

@@ -12,13 +12,9 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-<<<<<<< HEAD
     "mongodb": "^7.0.0",
     "moongose": "^1.0.0",
     "morgan": "^1.10.1",
-=======
-    "node-cron": "^4.2.1",
->>>>>>> 8732a1a366ce19015dc9698fdb3f5fced022e3e2
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11"    
   }
 }
