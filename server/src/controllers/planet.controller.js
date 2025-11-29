@@ -1,5 +1,5 @@
 import Planet from "../models/planet.model.js"
-import { PlanetHistory } from "../models/planetHistory.model.js";
+import { PlanetHistory } from "../models/planet.model.js";
 
 
 
