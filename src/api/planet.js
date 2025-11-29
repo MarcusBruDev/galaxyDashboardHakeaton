@@ -14,10 +14,13 @@ const deletePlanetRequest = (id) => axios.delete(`${API_URL}/${id}`);
 
 const updatePlanetRequest = (id, planet) => axios.put(`${API_URL}/${id}`, planet);
 
+const getPlanetHistoriesRequest = () => axios.get('http://localhost:3000/api/planet/histories');
+
 export {
   createNewPlanetRequest,
   getPlanetsRequest,
   getPlanetRequest,
   deletePlanetRequest,
-  updatePlanetRequest
+  updatePlanetRequest,
+  getPlanetHistoriesRequest
 };

@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { MarsGlobe } from './components/3d/MarsGlobe'
 import { StatsPanel } from './components/dashboard/StatsPanel'
 import { EnergyChart } from './components/dashboard/EnergyChart'
@@ -7,15 +7,16 @@ import { PopulationChart } from './components/dashboard/PopulationChart'
 import { RadarChartComponent } from './components/dashboard/RadarChart'
 import { PlanetInfo } from './components/dashboard/PlanetInfo'
 import { ColonyDetail } from './components/dashboard/ColonyDetail'
+import { TemperatureHistoryChart } from './components/dashboard/TemperatureHistoryChart'
 import { getPlanetsRequest } from './api/planet'
 
 // Import Mars data
 //import marsData from '../data.json'
 
 function App() {
- 
-  
-  
+
+
+
   const [marsData, setMarsData] = useState(null);
   const [selectedColony, setSelectedColony] = useState(null);
   const [selectedColonyId, setSelectedColonyId] = useState(null);
@@ -51,7 +52,7 @@ function App() {
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);
   }, [])
-  
+
   console.log("mars", marsData);
 
   // Access colonies directly from marsData (not marsData.planet)
@@ -100,7 +101,7 @@ function App() {
 
   return (
     <div className="w-screen h-screen bg-linear-to-br from-slate-950 via-slate-900 to-blue-950 flex flex-col overflow-hidden">
-      
+
       {/* Top Header */}
       <div className="h-16 bg-linear-to-r from-slate-900/80 to-slate-800/80 backdrop-blur-md border-b border-cyan-500/20 px-8 py-4 flex items-center justify-between">
         <div>
@@ -120,60 +121,67 @@ function App() {
 
       {/* Main Content */}
       <div className="flex-1 flex gap-4 p-4 overflow-hidden">
-        
+
         {/* Left: 3D Mars Globe - Full height */}
-        <div 
+        <div
           className="w-3/5 flex flex-col bg-linear-to-b from-slate-900 to-slate-950 rounded-2xl border border-cyan-500/20 shadow-2xl overflow-hidden relative"
         >
           <div className="absolute top-4 left-4 z-10 pointer-events-none">
             <h2 className="text-lg font-bold text-cyan-400">3D Interactive Globe</h2>
             <p className="text-xs text-gray-500">Click colonies • Drag to rotate • Scroll to zoom</p>
           </div>
-          
+
           <div className="flex-1 relative">
             <MarsGlobe onColonyClick={handleColonyClick} />
           </div>
         </div>
 
         {/* Right: Charts Dashboard - 40% width */}
-        <div className="w-2/5 flex flex-col gap-4 overflow-y-auto bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-2xl border border-cyan-500/20 p-4">
-          
-          {/* Planet Info */}
-          <PlanetInfo marsData={marsData} />
+        <div className="w-2/5 flex flex-col gap-3 bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-2xl border border-cyan-500/20 p-4 overflow-hidden">
 
-          {/* Charts Stack */}
-          <div className="space-y-3 flex-1 overflow-y-auto">
-            <div className="mb-2">
+          {/* Planet Info - Compacto */}
+          <div className="flex-shrink-0">
+            <PlanetInfo marsData={marsData} />
+          </div>
+
+          {/* Charts Stack - Con más espacio */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="mb-3 flex-shrink-0">
               <h2 className="text-lg font-bold text-cyan-400 mb-1">Real-time Analytics</h2>
               <p className="text-xs text-gray-500">Colony statistics & monitoring</p>
             </div>
 
-            <EnergyChart />
-            <PopulationChart />
-            <ResourcesChart />
-            <RadarChartComponent />
-            
-            {/* Colonies Section */}
-            <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-lg border border-cyan-500/30 p-4 mt-4">
-              <h3 className="text-lg font-bold text-cyan-400 mb-4">Colonies</h3>
-              
-              {/* Dropdown */}
-              <div className="mb-4">
-                <label className="block text-xs text-gray-500 mb-2">Select Colony</label>
-          <select
-    value={selectedColony?.id ?? ""}
-    onChange={(e) => setSelectedColony(colonies.find(c => c.id === e.target.value))}
->
-                  {colonies.map((colony) => (
-                    <option key={colony.id} value={colony.id} className="bg-slate-900 text-cyan-300">
-                      {colony.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            {/* Contenedor scrolleable para gráficos */}
+            <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-cyan-500/50 scrollbar-track-slate-800/50">
+              <EnergyChart />
+              <PopulationChart />
+              <ResourcesChart />
+              <RadarChartComponent />
+              <TemperatureHistoryChart />
 
-              {/* Selected Colony Stats */}
-              <StatsPanel colony={selectedColony} isFloating={false} isCompact={true} />
+              {/* Colonies Section */}
+              <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-lg border border-cyan-500/30 p-4">
+                <h3 className="text-lg font-bold text-cyan-400 mb-4">Colonies</h3>
+
+                {/* Dropdown */}
+                <div className="mb-4">
+                  <label className="block text-xs text-gray-500 mb-2">Select Colony</label>
+                  <select
+                    value={selectedColony?.id ?? ""}
+                    onChange={(e) => setSelectedColony(colonies.find(c => c.id === e.target.value))}
+                    className="w-full bg-slate-800/50 border border-cyan-500/30 rounded-lg px-3 py-2 text-cyan-300 focus:outline-none focus:border-cyan-500/70"
+                  >
+                    {colonies.map((colony) => (
+                      <option key={colony.id} value={colony.id} className="bg-slate-900 text-cyan-300">
+                        {colony.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Selected Colony Stats */}
+                <StatsPanel colony={selectedColony} isFloating={false} isCompact={true} />
+              </div>
             </div>
           </div>
         </div>
@@ -181,9 +189,9 @@ function App() {
 
       {/* Colony Detail Modal */}
       {selectedColonyId && (
-        <ColonyDetail 
-          colonyId={selectedColonyId} 
-          onClose={() => setSelectedColonyId(null)} 
+        <ColonyDetail
+          colonyId={selectedColonyId}
+          onClose={() => setSelectedColonyId(null)}
         />
       )}
     </div>

@@ -59,6 +59,21 @@ export const createPlanet = async (req, res) => {
 };
 
 
+// Obtener todos los PlanetHistory
+export const getPlanetHistories = async (req, res) => {
+  try {
+    const histories = await PlanetHistory.find();
+    res.json(histories);
+  } catch (error) {
+    console.error("Error fetching planet histories:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Error al obtener el historial del planeta"
+    });
+  }
+};
+
+
 // export const updatePlanet = async (req, res) => {
 //   try {
 //     const { id } = req.params;
