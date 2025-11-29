@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { MarsGlobe } from './components/3d/MarsGlobe'
 import { StatsPanel } from './components/dashboard/StatsPanel'
 import { EnergyChart } from './components/dashboard/EnergyChart'
@@ -7,14 +7,50 @@ import { PopulationChart } from './components/dashboard/PopulationChart'
 import { RadarChartComponent } from './components/dashboard/RadarChart'
 import { PlanetInfo } from './components/dashboard/PlanetInfo'
 import { ColonyDetail } from './components/dashboard/ColonyDetail'
+import { getPlanetsRequest } from './api/planet'
 
 // Import Mars data
-import marsData from '../data.json'
+//import marsData from '../data.json'
 
 function App() {
-  const colonies = marsData.planet.colonies
-  const [selectedColony, setSelectedColony] = useState(colonies[0])
-  const [selectedColonyId, setSelectedColonyId] = useState(null)
+ 
+  
+  
+  const [marsData, setMarsData]= useState(null)
+  const [selectedColony, setSelectedColony] = useState(null);
+  const [selectedColonyId, setSelectedColonyId] = useState(null);
+
+
+
+  useEffect(()=>{
+            console.log("hello  demtro")
+              async function getPlanets(){
+                      try{
+                         // const res = await getPlanetsRequest();
+                      
+                          setMarsData("hgello ");
+      
+                      }catch(error){
+                          console.log(error);
+                      }
+              }
+              getPlanets();           
+              
+  },[])
+  
+  console.log("mars", marsData)
+
+
+  const colonies = marsData?.planet?.colonies ?? [];
+  //const colonies = marsData.planet.colonies
+  //const [selectedColony, setSelectedColony] = useState(colonies[0])
+
+
+  useEffect(() => {
+    if (colonies.length > 0) {
+        setSelectedColony(colonies[0]);
+    }
+}, [colonies]);
 
   const handleColonyClick = (colonyId) => {
     setSelectedColonyId(colonyId)
@@ -61,7 +97,7 @@ function App() {
         <div className="w-2/5 flex flex-col gap-4 overflow-y-auto bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-2xl border border-cyan-500/20 p-4">
           
           {/* Planet Info */}
-          <PlanetInfo />
+          <PlanetInfo marsData={marsData} />
 
           {/* Charts Stack */}
           <div className="space-y-3 flex-1 overflow-y-auto">
@@ -82,11 +118,10 @@ function App() {
               {/* Dropdown */}
               <div className="mb-4">
                 <label className="block text-xs text-gray-500 mb-2">Select Colony</label>
-                <select
-                  value={selectedColony.id}
-                  onChange={(e) => setSelectedColony(colonies.find(c => c.id === e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-slate-800/50 border border-cyan-500/30 text-cyan-300 text-sm focus:border-cyan-500/60 focus:outline-none hover:border-cyan-500/50 transition-colors"
-                >
+          <select
+    value={selectedColony?.id ?? ""}
+    onChange={(e) => setSelectedColony(colonies.find(c => c.id === e.target.value))}
+>
                   {colonies.map((colony) => (
                     <option key={colony.id} value={colony.id} className="bg-slate-900 text-cyan-300">
                       {colony.name}

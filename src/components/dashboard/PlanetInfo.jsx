@@ -1,6 +1,35 @@
-import marsData from '../../../data.json'
+//import marsData from '../../../data.json'
 
-export function PlanetInfo() {
+import { createContext , useState, useEffect,useContext} from "react";
+import { getPlanetsRequest } from '../../api/planet'
+
+
+
+export function PlanetInfo({marsData}) {
+
+  console.log("planetas", marsData)
+
+  /*const [marsData, setMarsData]= useState([])
+
+
+   useEffect(()=>{
+            async function getPlanets(){
+                    try{
+                        const res = await getPlanetsRequest();
+                        console.log("hello  ")
+                        setMarsData([...res.data]);
+                      
+                    }catch(error){
+                        console.log(error);
+                    }
+            }
+            getPlanets();     
+  },[])*/
+
+
+
+
+
   const planet = marsData.planet
   const activeEvents = planet.events.filter(e => e.active)
 

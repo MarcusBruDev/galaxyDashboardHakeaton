@@ -1,6 +1,32 @@
-import marsData from '../../../data.json'
+//import marsData from '../../../data.json'
+import { createContext , useState, useEffect,useContext} from "react";
+import { getPlanetsRequest } from '../../api/planet'
+
 
 export function ColonyDetail({ colonyId, onClose }) {
+
+
+  const [marsData, setMarsData]= useState([])
+
+
+     useEffect(()=>{
+            async function getPlanets(){
+                    try{
+                        const res = await getPlanetsRequest();
+                        console.log(res)
+                        setMarsData([...res.data]);
+                      
+                    }catch(error){
+                        console.log(error);
+                    }
+            }
+            getPlanets();     
+    },[])
+
+
+    
+
+
   const colony = marsData.planet.colonies.find(c => c.id === colonyId)
   const totalPopulation = marsData.planet.population
   const coloniesCount = marsData.planet.colonies.length
