@@ -55,6 +55,26 @@ const EventSchema = new mongoose.Schema({
 const PlanetSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
+  global_resources: { type: GlobalResourcesSchema, required: true },
+  population: { type: Number, required: true },
+  environment: { type: EnvironmentSchema, required: true },
+  
+  colonies: { type: [ColonySchema], required: true },
+  events: { type: [EventSchema], required: true }
+
+}, {
+  timestamps: true // createdAt, updatedAt
+});
+
+const PlanetHistoriesSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  global_resources: { type: GlobalResourcesSchema, required: true },
+  population: { type: Number, required: true },
+  environment: { type: EnvironmentSchema, required: true },
+
+  colonies: { type: [ColonySchema], required: true },
+  events: { type: [EventSchema], required: true }
 
 }, {
   timestamps: true // createdAt, updatedAt
@@ -69,6 +89,5 @@ const PlanetSchema = new mongoose.Schema({
   events: { type: [EventSchema], required: true }*/
 
 
-
-
 export default mongoose.model("Planet", PlanetSchema);
+export const PlanetHistory = mongoose.model("PlanetHistory", PlanetHistoriesSchema);

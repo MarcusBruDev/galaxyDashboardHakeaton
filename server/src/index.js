@@ -1,8 +1,10 @@
 import  app  from './app.js';
 import { connectDB } from './db.js'
+import { startPlanetCron } from "./Services/randomChange.js";
 
+await connectDB();
 
-connectDB();
+startPlanetCron(); // se ejecuta cada 10 segundos sin bloquear la app
 
 app.listen(3000)
 
