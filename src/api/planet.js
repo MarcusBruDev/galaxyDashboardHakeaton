@@ -1,14 +1,23 @@
 import axios from "axios";
 
+// API Base URL - Server endpoint
+// Use localhost when running backend locally, or change to remote IP if needed
+const API_URL = 'http://localhost:3000/api/planet';
 
-const createNewPlanetRequest = (task) => axios.post('http://localhost:3000/api/tasks',task)
+const createNewPlanetRequest = (planet) => axios.post(API_URL, planet);
 
-const getPlanetsRequest = ()=> axios.get('http://localhost:3000/api/planet')
+const getPlanetsRequest = () => axios.get(API_URL);
 
-const getPlanetRequest = (id)=> axios.get(`http://localhost:3000/api/tasks/${id}`)
-const deletePlanetRequest = (id) => axios.delete(`http://localhost:3000/api/tasks/${id}`);
+const getPlanetRequest = (id) => axios.get(`${API_URL}/${id}`);
 
-const updatePlanetRequest = (planet) => axios.put(`http://localhost:3000/api/tasks/${planet}`,planet);
+const deletePlanetRequest = (id) => axios.delete(`${API_URL}/${id}`);
 
+const updatePlanetRequest = (id, planet) => axios.put(`${API_URL}/${id}`, planet);
 
-export { createNewPlanetRequest ,getPlanetsRequest,getPlanetRequest,deletePlanetRequest,updatePlanetRequest}
+export {
+  createNewPlanetRequest,
+  getPlanetsRequest,
+  getPlanetRequest,
+  deletePlanetRequest,
+  updatePlanetRequest
+};

@@ -4,34 +4,60 @@ import { getPlanetsRequest } from '../../api/planet'
 
 
 export function ColonyDetail({ colonyId, onClose }) {
+  const [marsData, setMarsData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    async function getPlanets() {
+      try {
+        setLoading(true);
+        const res = await getPlanetsRequest();
 
-  const [marsData, setMarsData]= useState([])
+        // The API returns an array, take the first planet (Mars)
+        if (res.data && res.data.length > 0) {
+          setMarsData(res.data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching planet data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getPlanets();
+  }, []);
 
+  // Show loading state
+  if (loading || !marsData) {
+    return (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500 mb-4"></div>
+          <p className="text-cyan-400">Loading colony data...</p>
+        </div>
+      </div>
+    );
+  }
 
-     useEffect(()=>{
-            async function getPlanets(){
-                    try{
-                        const res = await getPlanetsRequest();
-                        console.log(res)
-                        setMarsData([...res.data]);
-                      
-                    }catch(error){
-                        console.log(error);
-                    }
-            }
-            getPlanets();     
-    },[])
+  // marsData is now the planet object directly
+  const colony = marsData.colonies?.find(c => c.id === colonyId);
+  const totalPopulation = marsData.population;
+  const coloniesCount = marsData.colonies?.length || 0;
 
-
-    
-
-
-  const colony = marsData.planet.colonies.find(c => c.id === colonyId)
-  const totalPopulation = marsData.planet.population
-  const coloniesCount = marsData.planet.colonies.length
-
-  if (!colony) return null
+  if (!colony) {
+    return (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-slate-900/95 rounded-2xl border border-red-500/40 p-6 text-center">
+          <p className="text-red-400 mb-4">Colony not found</p>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-cyan-500/20 border border-cyan-500/50 rounded-lg text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Calculate impact on planet
   const populationPercentage = (colony.population / totalPopulation * 100).toFixed(1)

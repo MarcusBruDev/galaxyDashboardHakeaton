@@ -5,33 +5,22 @@ import { getPlanetsRequest } from '../../api/planet'
 
 
 
-export function PlanetInfo({marsData}) {
+export function PlanetInfo({ marsData }) {
+  console.log("planetas", marsData);
 
-  console.log("planetas", marsData)
+  // Handle case where marsData is not yet loaded
+  if (!marsData) {
+    return (
+      <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-lg border border-cyan-500/30 p-4">
+        <h3 className="text-lg font-bold text-cyan-400 mb-4">Mars Information</h3>
+        <p className="text-gray-500 text-sm">Loading planet data...</p>
+      </div>
+    );
+  }
 
-  /*const [marsData, setMarsData]= useState([])
-
-
-   useEffect(()=>{
-            async function getPlanets(){
-                    try{
-                        const res = await getPlanetsRequest();
-                        console.log("hello  ")
-                        setMarsData([...res.data]);
-                      
-                    }catch(error){
-                        console.log(error);
-                    }
-            }
-            getPlanets();     
-  },[])*/
-
-
-
-
-
-  const planet = marsData.planet
-  const activeEvents = planet.events.filter(e => e.active)
+  // marsData is now the planet object directly, not marsData.planet
+  const planet = marsData;
+  const activeEvents = planet.events?.filter(e => e.active) || [];
 
   return (
     <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-lg border border-cyan-500/30 p-4">

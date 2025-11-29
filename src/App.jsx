@@ -16,44 +16,86 @@ function App() {
  
   
   
-  const [marsData, setMarsData]= useState(null)
+  const [marsData, setMarsData] = useState(null);
   const [selectedColony, setSelectedColony] = useState(null);
   const [selectedColonyId, setSelectedColonyId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-
-
-  useEffect(()=>{
-            console.log("hello  demtro")
-              async function getPlanets(){
-                      try{
-                         // const res = await getPlanetsRequest();
-                      
-                          setMarsData("hgello ");
-      
-                      }catch(error){
-                          console.log(error);
-                      }
-              }
-              getPlanets();           
-              
-  },[])
-  
-  console.log("mars", marsData)
-
-
-  const colonies = marsData?.planet?.colonies ?? [];
-  //const colonies = marsData.planet.colonies
-  //const [selectedColony, setSelectedColony] = useState(colonies[0])
-
-
+  // Fetch planet data from server
   useEffect(() => {
-    if (colonies.length > 0) {
-        setSelectedColony(colonies[0]);
+    async function fetchPlanetData() {
+      try {
+        setLoading(true);
+        const response = await getPlanetsRequest();
+
+        // The API returns an array of planets, we take the first one (Mars)
+        if (response.data && response.data.length > 0) {
+          setMarsData(response.data[0]);
+        } else {
+          setError('No planet data found');
+        }
+      } catch (err) {
+        console.error('Error fetching planet data:', err);
+        setError('Failed to fetch planet data: ' + err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-}, [colonies]);
+
+    fetchPlanetData();
+
+    // Optional: Set up polling to refresh data every 30 seconds
+    const intervalId = setInterval(fetchPlanetData, 30000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, [])
+  
+  console.log("mars", marsData);
+
+  // Access colonies directly from marsData (not marsData.planet)
+  const colonies = marsData?.colonies ?? [];
+
+  // Set initial selected colony when data loads
+  useEffect(() => {
+    if (colonies.length > 0 && !selectedColony) {
+      setSelectedColony(colonies[0]);
+    }
+  }, [colonies, selectedColony]);
 
   const handleColonyClick = (colonyId) => {
     setSelectedColonyId(colonyId)
+  }
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="w-screen h-screen bg-linear-to-br from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-cyan-500 mb-4"></div>
+          <p className="text-cyan-400 text-xl font-medium">Loading Mars Colony Data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="w-screen h-screen bg-linear-to-br from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center">
+        <div className="text-center bg-red-500/10 border border-red-500/50 rounded-lg p-8 max-w-md">
+          <p className="text-red-400 text-xl font-bold mb-2">Error Loading Data</p>
+          <p className="text-red-300 text-sm">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-6 py-2 bg-cyan-500/20 border border-cyan-500/50 rounded-lg text-cyan-400 hover:bg-cyan-500/30 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

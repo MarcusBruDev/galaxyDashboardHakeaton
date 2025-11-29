@@ -4,7 +4,7 @@ import { startPlanetCron } from "./Services/randomChange.js";
 
 await connectDB();
 
-startPlanetCron(); // se ejecuta cada 10 segundos sin bloquear la app
+// startPlanetCron(); // se ejecuta cada 10 segundos sin bloquear la app
 
 app.listen(3000)
 

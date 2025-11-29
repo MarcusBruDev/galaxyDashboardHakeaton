@@ -1,4 +1,13 @@
 export function StatsPanel({ colony, isFloating = false, isCompact = false }) {
+  // Handle case where no colony is selected yet
+  if (!colony) {
+    return (
+      <div className="p-6 bg-linear-to-br from-slate-900/95 to-slate-950/95 backdrop-blur-md rounded-2xl border border-cyan-500/40 shadow-2xl text-center">
+        <p className="text-gray-400 text-sm">Select a colony to view statistics</p>
+      </div>
+    );
+  }
+
   // Map data.json structure to our display structure
   const resources = [
     { 
