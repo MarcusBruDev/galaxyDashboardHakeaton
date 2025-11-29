@@ -96,7 +96,7 @@
         "id": "ev-002",
         "type": "solar_flare",
         "description": "Erupción solar aumenta la radiación por 24 horas.",
-        "active": false
+        "active": true
       }
     ]
   }
