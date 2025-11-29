@@ -102,13 +102,12 @@ function App() {
   return (
     <div className="w-screen h-screen bg-linear-to-br from-slate-950 via-slate-900 to-blue-950 flex flex-col overflow-hidden">
 
-      {/* Top Header */}
-      <div className="h-16 bg-linear-to-r from-slate-900/80 to-slate-800/80 backdrop-blur-md border-b border-cyan-500/20 px-8 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            MARS COLONY CONTROL SYSTEM
-          </h1>
-        </div>
+      {/* 🔹 Top Header */}
+      <div className="h-16 bg-linear-to-r from-slate-900/80 to-slate-800/80 backdrop-blur-md border-b border-cyan-500/20 px-8 py-4 flex items-center justify-between flex-shrink-0">
+        <h1 className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+          MARS COLONY CONTROL SYSTEM
+        </h1>
+
         <div className="flex gap-3">
           <div className="px-4 py-2 rounded-lg bg-green-500/20 border border-green-500/50 text-sm text-green-400 font-medium">
             ● All Systems Operational
@@ -119,75 +118,79 @@ function App() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex gap-4 p-4 overflow-hidden">
+      {/* 🔹 Main Content Layout */}
+      <div className="flex-1 flex gap-4 p-4 overflow-hidden min-h-0">
 
-        {/* Left: 3D Mars Globe - Full height */}
-        <div
-          className="w-3/5 flex flex-col bg-linear-to-b from-slate-900 to-slate-950 rounded-2xl border border-cyan-500/20 shadow-2xl overflow-hidden relative"
-        >
+        {/* 🟥 Left: 3D Globe */}
+        <div className="w-3/5 flex flex-col bg-linear-to-b from-slate-900 to-slate-950 rounded-2xl border border-cyan-500/20 shadow-2xl overflow-hidden relative min-h-0">
+
           <div className="absolute top-4 left-4 z-10 pointer-events-none">
             <h2 className="text-lg font-bold text-cyan-400">3D Interactive Globe</h2>
             <p className="text-xs text-gray-500">Click colonies • Drag to rotate • Scroll to zoom</p>
           </div>
 
-          <div className="flex-1 relative">
+          <div className="flex-1 relative min-h-0">
             <MarsGlobe onColonyClick={handleColonyClick} />
           </div>
         </div>
 
-        {/* Right: Charts Dashboard - 40% width */}
-        <div className="w-2/5 flex flex-col gap-3 bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-2xl border border-cyan-500/20 p-4 overflow-hidden">
+        {/* 🟦 Right: Charts Dashboard */}
+        <div className="w-2/5 flex flex-col bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-2xl border border-cyan-500/20 p-4 overflow-hidden min-h-0">
 
-          {/* Planet Info - Compacto */}
-          <div className="flex-shrink-0">
+          {/* 🔸 Top: Planet Info */}
+          <div className="flex-shrink-0 mb-3">
             <PlanetInfo marsData={marsData} />
           </div>
 
-          {/* Charts Stack - Con más espacio */}
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="mb-3 flex-shrink-0">
+          {/* 🔸 Scrollable Analytics */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-4
+                        scrollbar-thin scrollbar-thumb-cyan-500/40 scrollbar-track-slate-900/40">
+
+            {/* Section Header */}
+            <div>
               <h2 className="text-lg font-bold text-cyan-400 mb-1">Real-time Analytics</h2>
               <p className="text-xs text-gray-500">Colony statistics & monitoring</p>
             </div>
 
-            {/* Contenedor scrolleable para gráficos */}
-            <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-cyan-500/50 scrollbar-track-slate-800/50">
-              <EnergyChart />
-              <PopulationChart />
-              <ResourcesChart />
-              <RadarChartComponent />
-              <TemperatureHistoryChart />
+            {/* Charts */}
+            <EnergyChart />
+            <PopulationChart />
+            <ResourcesChart />
+            <RadarChartComponent />
+            <TemperatureHistoryChart />
 
-              {/* Colonies Section */}
-              <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 rounded-lg border border-cyan-500/30 p-4">
-                <h3 className="text-lg font-bold text-cyan-400 mb-4">Colonies</h3>
+            {/* Colonies Panel */}
+            <div className="bg-linear-to-br from-slate-900/50 to-slate-950/50 
+                          rounded-lg border border-cyan-500/30 p-4">
+              <h3 className="text-lg font-bold text-cyan-400 mb-4">Colonies</h3>
 
-                {/* Dropdown */}
-                <div className="mb-4">
-                  <label className="block text-xs text-gray-500 mb-2">Select Colony</label>
-                  <select
-                    value={selectedColony?.id ?? ""}
-                    onChange={(e) => setSelectedColony(colonies.find(c => c.id === e.target.value))}
-                    className="w-full bg-slate-800/50 border border-cyan-500/30 rounded-lg px-3 py-2 text-cyan-300 focus:outline-none focus:border-cyan-500/70"
-                  >
-                    {colonies.map((colony) => (
-                      <option key={colony.id} value={colony.id} className="bg-slate-900 text-cyan-300">
-                        {colony.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* Dropdown */}
+              <label className="block text-xs text-gray-500 mb-2">Select Colony</label>
+              <select
+                value={selectedColony?.id ?? ""}
+                onChange={(e) =>
+                  setSelectedColony(colonies.find(c => c.id === e.target.value))
+                }
+                className="w-full bg-slate-800/50 border border-cyan-500/30 
+                         rounded-lg px-3 py-2 text-cyan-300 
+                         focus:outline-none focus:border-cyan-500/70 mb-4"
+              >
+                {colonies.map(colony => (
+                  <option key={colony.id} value={colony.id}
+                    className="bg-slate-900 text-cyan-300">
+                    {colony.name}
+                  </option>
+                ))}
+              </select>
 
-                {/* Selected Colony Stats */}
-                <StatsPanel colony={selectedColony} isFloating={false} isCompact={true} />
-              </div>
+              {/* Stats */}
+              <StatsPanel colony={selectedColony} isFloating={false} isCompact={true} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Colony Detail Modal */}
+      {/* Modal */}
       {selectedColonyId && (
         <ColonyDetail
           colonyId={selectedColonyId}
@@ -196,6 +199,7 @@ function App() {
       )}
     </div>
   )
+
 }
 
 export default App
